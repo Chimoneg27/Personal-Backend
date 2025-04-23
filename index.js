@@ -1,4 +1,6 @@
-const http = require('http')
+const express = require('express') //import express which is a function for making an express application
+// which is stored in the app variable
+const app = express()
 
 const projects = [
   {
@@ -19,13 +21,15 @@ const projects = [
   }
 ]
 
-// createServer method of the http module used to create the web server
-const app = http.createServer((request, response) => {
-  response.writeHead(200, { 'content-type': 'text/plain' })
-  response.end(JSON.stringify(projects))
+app.get('/', (request, response) => { //original routes
+  response.send('<h1>Hello Garvin</h1')
 })
 
-// binds the http server assigned to the app variable to listen to HTTP requests on port 3001
+app.get('/garvinAPI/projects', (request, response) => {
+  response.json(projects) // no need for stringify because in express the conversion happens automatically
+})
+
 const PORT = 3001
-app.listen(PORT)
-console.log(`Server running on ${PORT}`)
+app.listen(PORT, () => {
+  console.log(`Server running on ${PORT}`)
+})
