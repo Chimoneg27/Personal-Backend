@@ -40,6 +40,13 @@ app.get("/garvinchimone/projects/:id", (request, response) => {
   }
 });
 
+app.delete('/garvinchimone/projects/:id', (request, response) => {
+  const id = request.id
+  projects = projects.filter(p => p.id !== id)
+
+  response.status(204).end()
+})
+
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
