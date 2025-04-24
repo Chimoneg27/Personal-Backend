@@ -2,7 +2,7 @@ const express = require("express"); //import express which is a function for mak
 // which is stored in the app variable
 const app = express();
 
-const projects = [
+let projects = [
   {
     id: "1",
     name: "Kids Heaven Book Store",
@@ -12,7 +12,7 @@ const projects = [
     description: "this is a great site to order books",
   },
   {
-    id: "1",
+    id: "2",
     name: "Kids Heaven Book Store",
     techStack: ["html", "reactjs", "tailwind"],
     website: "http://kidsheavenbooks",
