@@ -2,6 +2,8 @@ const express = require("express"); //import express which is a function for mak
 // which is stored in the app variable
 const app = express();
 
+app.use(express.json()) // json parser. converts JSON into a usable data structure
+
 let projects = [
   {
     id: "1",
@@ -39,6 +41,11 @@ app.get("/garvinchimone/projects/:id", (request, response) => {
     response.status(404).end();
   }
 });
+
+app.post('garvinchimone/projects', (request, response) => {
+  const project = request.body
+  response.json(project)
+})
 
 app.delete('/garvinchimone/projects/:id', (request, response) => {
   const id = request.id
