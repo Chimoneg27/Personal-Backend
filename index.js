@@ -18,7 +18,7 @@ let projects = [
     name: "Kids Heaven Book Store",
     techStack: ["html", "reactjs", "tailwind"],
     website: "http://kidsheavenbooks",
-    picture: ["pic1", "pic2"],
+    picture: ["pic 1", "pic2"],
     description: "this is a great site to order books",
   },
 ];
@@ -42,7 +42,7 @@ app.get("/garvinchimone/projects/:id", (request, response) => {
   }
 });
 
-app.post('garvinchimone/projects', (request, response) => {
+app.post('/garvinchimone/projects', (request, response) => {
   const project = request.body
   response.json(project)
 })
