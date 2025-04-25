@@ -10,7 +10,7 @@ let projects = [
     name: "Kids Heaven Book Store",
     techStack: ["html", "reactjs", "tailwind"],
     website: "http://kidsheavenbooks",
-    picture: ["pic1", "pic2"],
+    picture: 'pic1',
     description: "this is a great site to order books",
   },
   {
@@ -18,7 +18,7 @@ let projects = [
     name: "Kids Heaven Book Store",
     techStack: ["html", "reactjs", "tailwind"],
     website: "http://kidsheavenbooks",
-    picture: ["pic 1", "pic2"],
+    picture: "pic 1",
     description: "this is a great site to order books",
   },
 ];
@@ -42,8 +42,34 @@ app.get("/garvinchimone/projects/:id", (request, response) => {
   }
 });
 
+const generateId = () => {
+  const maxId = projects.length > 0
+  ? Math.max(...projects.map(p => Number(p.id)))
+  : 0
+
+  return String(maxId + 1)
+}
+
 app.post('/garvinchimone/projects', (request, response) => {
-  const project = request.body
+  const body = request.body
+
+  if(!body.name) {
+    return response.status(400).json({
+      error: 'content missing'
+    })
+  }
+
+  const project = {
+    name: body.name,
+    techStack: body.techStack,
+    website: body.website,
+    picture: body.picture,
+    description: body.description,
+    id: generateId
+  }
+
+  projects = projects.concat(project)
+
   response.json(project)
 })
 
