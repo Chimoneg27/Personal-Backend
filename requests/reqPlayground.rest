@@ -1,0 +1,17 @@
+POST http://localhost:3001/garvinchimone/projects
+Content-Type: application/json
+
+{
+  "name": "Garvin Chimone",
+  "techStack": [
+    "React",
+    "Node.js",
+    "Express"
+  ],
+  "website": "https://garvinchimone.com",
+  "picture": [
+    "https://garvinchimone.com/picture1.jpg",
+    "https://garvinchimone.com/picture2.jpg"
+  ],
+  "description": "A passionate developer with a love for coding and technology."
+}
