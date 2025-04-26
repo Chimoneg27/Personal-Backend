@@ -1,6 +1,7 @@
 const express = require("express"); //import express which is a function for making an express application
 // which is stored in the app variable
 const app = express();
+const cors = require('cors')
 
 app.use(express.json()) // json parser. converts JSON into a usable data structure
 
@@ -79,6 +80,13 @@ app.delete('/garvinchimone/projects/:id', (request, response) => {
 
   response.status(204).end()
 })
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(cors)
+app.use(unknownEndpoint)
 
 const PORT = 3001;
 app.listen(PORT, () => {
