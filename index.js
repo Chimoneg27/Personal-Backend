@@ -28,8 +28,18 @@ let projects = [
 
 const main = async () => {
   // client queries are here
- const allProjects = await prisma.project.findMany()
- console.log(allProjects)
+  const newProject = await prisma.project.create({
+    data: {
+      name: 'Jah Talks Music Blog',
+      description: 'A website built for the youtuber JahTalksMusic',
+      image: 'https://i.pinimg.com/736x/53/bd/a8/53bda8ac30f17d6cb250658167461dbe.jpg',
+      url: 'http://jahtalksmusic.com',
+      techStack: ['ReactJS', 'Redux', 'NodeJS', 'PostgreSQL', 'Prisma']
+    }
+  })
+
+  const allProjects = await prisma.project.findMany()
+  console.log(allProjects)
 }
 
 main()
