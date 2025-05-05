@@ -27,19 +27,19 @@ let projects = [
 ];
 
 const main = async () => {
-  // client queries are here
-  const newProject = await prisma.project.create({
+  const newBlog = await prisma.blog.create({
     data: {
-      name: 'Jah Talks Music Blog',
-      description: 'A website built for the youtuber JahTalksMusic',
+      title: 'General Overview',
+      content: `<p>This blog section of my personal portfolio will be for displaying my interests, current and future.</p><p>Expect to see content about my hobbies, random thoughts, and ideas for what's ahead.</p>`,
+      author: 'Garvin Chimone',
       image: 'https://i.pinimg.com/736x/53/bd/a8/53bda8ac30f17d6cb250658167461dbe.jpg',
-      url: 'http://jahtalksmusic.com',
-      techStack: ['ReactJS', 'Redux', 'NodeJS', 'PostgreSQL', 'Prisma']
+      tags: ['Hobbies', 'Misc']
     }
   })
 
   const allProjects = await prisma.project.findMany()
-  console.log(allProjects)
+  const allBlogs = await prisma.blog.findMany()
+  console.log(allBlogs)
 }
 
 main()
