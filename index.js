@@ -1,5 +1,7 @@
 const express = require("express"); //import express which is a function for making an express application
 // which is stored in the app variable
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
 const app = express();
 const cors = require('cors')
 
@@ -23,6 +25,32 @@ let projects = [
     description: "this is a great site to order books",
   },
 ];
+
+const main = async () => {
+  const newBlog = await prisma.blog.create({
+    data: {
+      title: 'General Overview',
+      content: `<p>This blog section of my personal portfolio will be for displaying my interests, current and future.</p><p>Expect to see content about my hobbies, random thoughts, and ideas for what's ahead.</p>`,
+      author: 'Garvin Chimone',
+      image: 'https://i.pinimg.com/736x/53/bd/a8/53bda8ac30f17d6cb250658167461dbe.jpg',
+      tags: ['Hobbies', 'Misc']
+    }
+  })
+
+  const allProjects = await prisma.project.findMany()
+  const allBlogs = await prisma.blog.findMany()
+  console.log(allBlogs)
+}
+
+main()
+  .then(async () => {
+    await prisma.$disconnect()
+  })
+  .catch(async (e) => {
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+  })
 
 app.get("/", (request, response) => {
   //original routes
@@ -66,7 +94,7 @@ app.post('/garvinchimone/projects', (request, response) => {
     website: body.website,
     picture: body.picture,
     description: body.description,
-    id: generateId
+    id: generateId()
   }
 
   projects = projects.concat(project)
@@ -75,7 +103,7 @@ app.post('/garvinchimone/projects', (request, response) => {
 })
 
 app.delete('/garvinchimone/projects/:id', (request, response) => {
-  const id = request.id
+  const id = request.params.id
   projects = projects.filter(p => p.id !== id)
 
   response.status(204).end()
@@ -85,7 +113,7 @@ const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 
-app.use(cors)
+app.use(cors())
 app.use(unknownEndpoint)
 
 const PORT = process.env.PORT || 3001
