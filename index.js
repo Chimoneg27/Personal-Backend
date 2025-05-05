@@ -1,6 +1,6 @@
 const express = require("express"); //import express which is a function for making an express application
 // which is stored in the app variable
-const { PrismaClient } = require('@prisma/client')
+import { PrismaClient } from './generated/prisma/client'
 const prisma = new PrismaClient()
 const app = express();
 const cors = require('cors')
