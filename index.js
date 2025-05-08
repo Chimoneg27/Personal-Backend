@@ -57,17 +57,28 @@ app.get("/", (request, response) => {
   response.send("<h1>Hello Garvin</h1");
 });
 
-app.get("/garvinchimone/projects", (request, response) => {
-  response.json(projects); // no need for stringify because in express the conversion happens automatically
+app.get("/garvinchimone/projects", async (request, response) => {
+  try {
+    const projects = await prisma.project.findMany()
+    response.json(projects)
+  } catch (error) {
+    response.status(500).json({ error: 'Failed to fetch projects' })
+  }
 });
 
-app.get("/garvinchimone/projects/:id", (request, response) => {
-  const id = request.params.id; // access the id of the particuluar project
-  const project = projects.find((p) => p.id === id);
-  if (project) {
-    response.json(project);
-  } else {
-    response.status(404).end();
+app.get("/garvinchimone/projects/:id", async (request, response) => {
+  const { id } = request.params
+
+  try {
+    const project = await prisma.project.findUnique({
+      where: { id: id }
+    })
+
+    if(!project) return response.status(404).json({ error: 'Project not found' })
+
+    response.json(project)
+  } catch (error) {
+    response.status(500).json({ error: 'Faile to fetch project' })
   }
 });
 
@@ -79,27 +90,27 @@ const generateId = () => {
   return String(maxId + 1)
 }
 
-app.post('/garvinchimone/projects', (request, response) => {
-  const body = request.body
+app.post('/garvinchimone/projects', async (request, response) => {
+  const { name, techStack, website, picture, description } = request.body
 
-  if(!body.name) {
-    return response.status(400).json({
-      error: 'content missing'
+  if(!name || !techStack || !website) {
+    return response.status(400).json({ error: 'Miising required fields' })
+  }
+
+  try {
+    const newProject = await prisma.project.create({
+      data: {
+        name,
+        techStack,
+        website,
+        picture,
+        description,
+      }
     })
+    response.json(newProject)
+  } catch (error) {
+    response.status(500).json({ error: 'Failed to create project' })
   }
-
-  const project = {
-    name: body.name,
-    techStack: body.techStack,
-    website: body.website,
-    picture: body.picture,
-    description: body.description,
-    id: generateId()
-  }
-
-  projects = projects.concat(project)
-
-  response.json(project)
 })
 
 app.delete('/garvinchimone/projects/:id', (request, response) => {
